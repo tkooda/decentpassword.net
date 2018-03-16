@@ -14,12 +14,13 @@
   body { background: #d3d3d3 !important; }
   h1 { font-family: 'Helvetica', serif; }
   .genPassword, .footer { padding:15px; }
+  .input-group {
+    max-width: 300px;
+    margin: 0 auto;
+  }
 </style>
 
 <script language="javascript">
-//if (window.location.protocol != "https:")
-//    window.location.href = "https:" + window.location.href.substring(window.location.protocol.length); // fix github.io redirecting directories w/out trailing slash to http
-
 
 // attempt to generate cryptographically secure random byte, with optional max for using as a charset index
 function getRandomByte( max = 256 ) {
@@ -66,6 +67,7 @@ $(document).ready(function(){
 
 </script>
 
+
 <div class="container text-center">
 
   <br/>
@@ -75,10 +77,10 @@ $(document).ready(function(){
   <div class="form-group">
     <form role="form" id="myForm" name="myForm" action="">
 
-      <div class="col-xs-4 col-xs-offset-4 text-center">
+      <div>
 
         <div class="input-group">
-          <input type="text" id="password" name="password" class="form-control input-lg text-center">
+          <input type="text" id="password" name="password" class="form-control input-lg text-center ">
           <span class="input-group-addon">
             <button type="button" id="clip-btn" data-clipboard-target="#password">
               <img src="static/clippy.svg" width="20" alt="Copy to clipboard">
@@ -90,12 +92,6 @@ $(document).ready(function(){
           <button type="button" id="generate" class="btn btn-success btn-lg" onclick="document.getElementById('password').value = generatePassword();">Generate a decent password</button></div>
         </div>
 
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
         <div class="footer">
           <h4>
             <label><small>(Generated securely using only your browser)</small></label>
