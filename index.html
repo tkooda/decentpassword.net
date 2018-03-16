@@ -1,0 +1,114 @@
+<html>
+<head>
+ <title>DecentPassword.net - Generate a decent password using JavaScript</title>
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css">
+ <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js" crossorigin="anonymous" integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk"></script>
+ <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js" crossorigin="anonymous" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"></script>
+ <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.8/clipboard.min.js" crossorigin="anonymous" integrity="sha384-6IvGwMLZzeEDqfqkglJOV5PIsjfAnO7VLUOZKdFasr8OfwhrG5BU1xnrmfYhIJbA"></script>
+ <link rel="shortcut icon" type="image/png" href="data:image/png;base64,iVBORw0KGgo=">
+</head>
+<body>
+
+<style type="text/css">
+  body { background: #d3d3d3 !important; }
+  h1 { font-family: 'Helvetica', serif; }
+  .genPassword, .footer { padding:15px; }
+</style>
+
+<script language="javascript">
+if (window.location.protocol != "https:")
+    window.location.href = "https:" + window.location.href.substring(window.location.protocol.length); // fix github.io redirecting directories w/out trailing slash to http
+
+
+// attempt to generate cryptographically secure random byte, with optional max for using as a charset index
+function getRandomByte( max = 256 ) {
+    // http://caniuse.com/#feat=getrandomvalues
+    var crypto = window.crypto || window.msCrypto;
+    if ( crypto && crypto.getRandomValues ) {
+        var a = new Uint8Array( 1 );
+        while ( true ) {
+            crypto.getRandomValues( a );
+            if ( a[0] <= max ) return a[0];
+        }
+    } else {
+        return Math.floor( Math.random() * max );
+    }
+};
+
+
+function generatePassword( charset = "abcdefghijknopqrstuvwxyzACDEFGHJKLMNPQRSTUVWXYZ2345679" ) {
+    var password = "";
+    for ( var i = 0, maxIndex = charset.length; i < 12; i++ ) {
+        if ( i == 4 || i == 8 ) password += "-";
+        password += charset.charAt( getRandomByte( maxIndex ) );
+    }
+    return password;
+};
+
+
+$(document).ready(function(){
+  // popup temporary tooltip when clicking copy button ..
+  var clipboard = new Clipboard( "#clip-btn" );
+  clipboard.on( "success", function(e) {
+    if ( document.getElementById( "password" ).value != null && document.getElementById( "password" ).value != "" ) {
+      $( "#clip-btn" ).tooltip( "enable" ).attr( "title", "Password copied to clipboard" ).tooltip( "fixTitle" ).tooltip( "show" );
+    }
+  });
+  $( "#clip-btn" ).mouseleave( function() {
+    $( "#clip-btn" ).tooltip( "disable" );
+  });
+  
+  document.getElementById('password').value = generatePassword();
+});
+
+//$(document).on('click','input[type=text]',function(){ this.select(); }); // select all, harder to edit before copy
+
+</script>
+
+<div class="container text-center">
+
+  <br/>
+  <h1>Generate a decent password using JavaScript:</h1>
+  <br/>
+  
+  <div class="form-group">
+    <form role="form" id="myForm" name="myForm" action="">
+
+      <div class="col-xs-4 col-xs-offset-4 text-center">
+
+        <div class="input-group">
+          <input type="text" id="password" name="password" class="form-control input-lg text-center">
+          <span class="input-group-addon">
+            <button type="button" id="clip-btn" data-clipboard-target="#password">
+              <img src="static/clippy.svg" width="20" alt="Copy to clipboard">
+            </button>
+          </span>
+        </div>
+
+        <div class="genPassword">
+          <button type="button" id="generate" class="btn btn-success btn-lg" onclick="document.getElementById('password').value = generatePassword();">Generate a decent password</button></div>
+        </div>
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+        <div class="footer">
+          <h4>
+            <label><small>(Generated securely using only your browser)</small></label>
+          </h4>
+          <a href="https://temporal.pw/">Send a password securely</a> | <a href="https://github.com/tkooda/decentpassword">Source</a></br>
+        </div>
+        
+      </div>
+
+    </form>
+  </div>
+
+</div>
+
+</body>
+</html>
