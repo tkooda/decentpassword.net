@@ -38,7 +38,7 @@ function getRandomByte( max = 256 ) {
 };
 
 
-function generatePassword( charset = "abcdefghijknopqrstuvwxyzACDEFGHJKLMNPQRSTUVWXYZ2345679" ) {
+function generatePassword( charset = "abcdefghknopqrstuvwxyzCDEFHJKLMNPQRTUVWXY379" ) {
     var password = "";
     for ( var i = 0, maxIndex = charset.length; i < 12; i++ ) {
         if ( i == 4 || i == 8 ) password += "-";
